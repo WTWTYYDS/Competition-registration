@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::any('excel','\App\Http\Controllers\wt\ExcelController@export');
+Route::post('manager/add/users','\App\Http\Controllers\wt\UsersController@registered');
 
