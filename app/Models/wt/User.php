@@ -4,22 +4,24 @@ namespace App\Models\wt;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable ;
 
     protected $table = 'users';
     protected $remeberTokenName = NULL;
     protected $guarded = [];
-    protected $fillable = [ 'password','stu_id'];
+    protected $fillable = [ 'password','admin','school_name'];
     protected $hidden = [
         'password',
     ];
     public function getJWTCustomClaims()
     {
         // TODO: Implement getJWTCustomClaims() method.
-        return [];
+        return ['role' => 'user'];
     }
 
 
@@ -58,13 +60,10 @@ class User extends Model
      */
     public static function checknumber($request)
     {
-        $student_job_number = $request['stu_id'];
+        $student_job_number = $request['admin'];
         try{
-            $count = self::select('stu_id')
-                ->where('stu_id',$student_job_number)
+            $count = self::where('admin',$student_job_number)
                 ->count();
-            //echo "该账号存在个数：".$count;
-            //echo "\n";
             return $count;
         }catch (\Exception $e) {
             logError("账号查询失败！", [$e->getMessage()]);
@@ -73,11 +72,46 @@ class User extends Model
     }
 
     /**
-     * 获取表的全部数据
-     *
+     * where 删除
      */
-    public static function select()
+    public static function del($name)
     {
-        return self::select()->get();
+        try{
+            $count = self::where('school_name',$name)->delete();
+            return $count;
+        }catch (\Exception $e) {
+            logError("账号删除失败！", [$e->getMessage()]);
+            return false;
+        }
+    }
+
+    /**
+     *
+     *查询学校名和账号
+     */
+    public static function sel_users()  {
+        try{
+            $count = self::select('school_name as 学校名', 'admin as 账号')->get();
+//            $count = self::all();
+            return $count;
+        }catch (\Exception $e) {
+            logError("查询学校名和账号失败！", [$e->getMessage()]);
+            return false;
+        }
+    }
+    /**
+     *
+     *查询学校名和账号
+     */
+    public static function dim_sel_users($name)  {
+        try{
+            $count = self::select('school_name as 学校名', 'admin as 账号')
+                ->where('school_name','like','%'.$name.'%')
+                ->get();
+            return $count;
+        }catch (\Exception $e) {
+            logError("查询学校名和账号失败！", [$e->getMessage()]);
+            return false;
+        }
     }
 }

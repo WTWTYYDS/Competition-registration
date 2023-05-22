@@ -52,6 +52,11 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'refresh.token' => \App\Http\Middleware\RefreshToken::class,
+        'jwt.role' => \App\Http\Middleware\JWTRoleAuth::class,
+
+
+
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

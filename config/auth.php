@@ -45,6 +45,11 @@ return [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
+
+        'super' => [
+            'driver' => 'jwt',
+            'provider' => 'user',
+        ]
     ],
 
     /*
@@ -67,7 +72,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\wt\User::class,
+        ],
+
+        'user' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\wt\SupUser::class,
         ],
 
         // 'users' => [
