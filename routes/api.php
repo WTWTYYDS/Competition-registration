@@ -109,3 +109,52 @@ Route::any('excel/school','\App\Http\Controllers\wt\ExcelController@export');
 Route::post('add/information', '\App\Http\Controllers\wt\Competiton_users@inf_add');
 Route::post('type/select/all', '\App\Http\Controllers\wt\Competiton_InfController@find_all_user');
 Route::post('add/array/information', '\App\Http\Controllers\wt\Competiton_users@inf_add_array');
+
+
+// 普通用户(djp)
+Route::middleware('jwt.role:user')->prefix('user')->group( function () {
+    //用户登录
+    Route::post('login/users','\App\Http\Controllers\djp\UsersController@login')->middleware(['refresh.token:api']);
+    //判断是否第一登录
+    Route::post('judgement/users','\App\Http\Controllers\djp\UsersController@judgement');
+    //忘记密码的邮箱验证
+    Route::post('verify/users','\App\Http\Controllers\djp\UsersController@verify')->middleware(['refresh.token:api']);
+    //确定密码的更改
+    Route::any('confirm/users','\App\Http\Controllers\djp\UsersController@confirm')->middleware(['refresh.token:api']);
+    //展示将要修改用户的全部信息
+    Route::get('showcase/users/{id}','\App\Http\Controllers\djp\UsersController@showcase')->middleware(['refresh.token:api']);
+    //修改用户的信息并保存
+    Route::post('revise/users','\App\Http\Controllers\djp\UsersController@revise')->middleware(['refresh.token:api']);
+    //第一次登录修改密码，绑定邮箱
+    Route::post('first/users','\App\Http\Controllers\djp\UsersController@first')->middleware(['refresh.token:api']);
+
+});
+
+// 管理员（djp）
+Route::middleware('jwt.role:admin')->prefix('admin')->group( function () {
+    //确定更改用户的信息
+    Route::post('revise/admin','\App\Http\Controllers\djp\AdminController@revise')->middleware(['refresh.token:super']);
+    //显示用户的所有信息
+    Route::get('showcase/admin/{id}','\App\Http\Controllers\djp\AdminController@showcase')->middleware(['refresh.token:super']);
+    //显示将要修改项目的信息
+    Route::get('showproject/admin/{id}','\App\Http\Controllers\djp\AdminController@showproject')->middleware(['refresh.token:super']);
+    //修改项目的内容
+    Route::post('chage/admin','\App\Http\Controllers\djp\AdminController@chage')->middleware(['refresh.token:super']);
+
+});
+
+//djp测试
+Route::post('login/users','\App\Http\Controllers\djp\UsersController@login');
+Route::post('verify/users','\App\Http\Controllers\djp\UsersController@verify');
+Route::post('judgement/users','\App\Http\Controllers\djp\UsersController@judgement');
+Route::post('confirm/users','\App\Http\Controllers\djp\UsersController@confirm');
+Route::get('showcase/users/{id}','\App\Http\Controllers\djp\UsersController@showcase');
+Route::post('revise/users','\App\Http\Controllers\djp\UsersController@revise');
+Route::post('first/users','\App\Http\Controllers\djp\UsersController@first');
+
+
+
+Route::post('revise/admin','\App\Http\Controllers\djp\AdminController@revise');
+Route::get('showcase/admin/{id}','\App\Http\Controllers\djp\AdminController@showcase');
+Route::get('showproject/admin/{id}','\App\Http\Controllers\djp\AdminController@showproject');
+Route::post('chage/admin','\App\Http\Controllers\djp\AdminController@chage');
