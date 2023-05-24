@@ -109,3 +109,26 @@ Route::any('excel/school','\App\Http\Controllers\wt\ExcelController@export');
 Route::post('add/information', '\App\Http\Controllers\wt\Competiton_users@inf_add');
 Route::post('type/select/all', '\App\Http\Controllers\wt\Competiton_InfController@find_all_user');
 Route::post('add/array/information', '\App\Http\Controllers\wt\Competiton_users@inf_add_array');
+
+
+
+/*
+ * 用户端
+ */
+Route::get('yongcha','teacher@yongcha');//默认报名信息报名
+Route::post('sancyong','teacher@sancyong');//删除
+Route::post('piliangshancyong','teacher@piliangshancyong');//批量删除
+
+
+/*
+ * 管理员端
+ */
+Route::get('xuecha','teacher@xuecha');//返回学校信息
+Route::post('sancguan','teacher@sancguan');//删除学校
+Route::post('piliangshancguan','teacher@piliangshancguan');//批量删除学校
+Route::get('baocha','teacher@baocha');//返回报名信息
+Route::post('sancguanbao','teacher@sancguanbao');//报名信息删除
+Route::post('piliangshancguanbao','piliangshancguanbao');//报名信息批量删除
+Route::get('bisaicha','teacher@bisaicha');//返回全部项目
+Route::post('sancguanbi','teacher@sancguanbi');//比赛删除
+Route::post('piliangshancguannbi','teacher@piliangshancguannbi');//比赛批量删除
